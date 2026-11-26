@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "components": [
+    {
+      "name": "Bash",
+      "version": "5.1",
+      "description": "GNU Bourne Again Shell used in the Linux-based IVI and gateway root file systems",
+      "vendor": "GNU",
+      "manufacturer": "Free Software Foundation",
+      "type": "software",
+      "keywords": [
+        "GNU Bash"
+      ],
+      "aliases": [
+        "Bourne Again Shell"
+      ],
+      "cpe": [
+        "cpe:2.3:a:gnu:bash:5.1:*:*:*:*:*:*:*"
+      ],
+      "projects": [
+        "Infotainment-IVI-2025",
+        "ECU-Gateway-G7"
+      ],
+      "exclude_keywords": [
+        "Git Bash"
+      ],
+      "purl": "",
+      "osv_ecosystem": "",
+      "osv_package": "",
+      "category": "",
+      "enabled": true,
+      "id": "bash51"
+    },
+    {
+      "name": "Python",
+      "version": "3.8.10",
+      "description": "CPython interpreter used for HIL test automation and flashing scripts",
+      "vendor": "Python Software Foundation",
+      "manufacturer": "Python Software Foundation",
+      "type": "software",
+      "keywords": [
+        "CPython",
+        "Python"
+      ],
+      "aliases": [
+        "python3"
+      ],
+      "cpe": [
+        "cpe:2.3:a:python:python:3.8.10:*:*:*:*:*:*:*"
+      ],
+      "projects": [
+        "Test-Bench-HIL",
+        "BMS-Controller"
+      ],
+      "exclude_keywords": [],
+      "purl": "",
+      "osv_ecosystem": "",
+      "osv_package": "",
+      "category": "Core Component",
+      "enabled": true,
+      "id": "py3810"
+    },
+    {
+      "name": "Git",
+      "version": "2.39.2",
+      "description": "Git version control client used on build servers and developer workstations",
+      "vendor": "Git project",
+      "manufacturer": "Software Freedom Conservancy",
+      "type": "tool",
+      "keywords": [
+        "Git"
+      ],
+      "aliases": [],
+      "cpe": [
+        "cpe:2.3:a:git-scm:git:2.39.2:*:*:*:*:*:*:*"
+      ],
+      "projects": [
+        "CI-Build-Infrastructure",
+        "Infotainment-IVI-2025"
+      ],
+      "exclude_keywords": [],
+      "purl": "",
+      "osv_ecosystem": "",
+      "osv_package": "",
+      "category": "Tool",
+      "enabled": true,
+      "id": "git239"
+    },
+    {
+      "name": "J-Link",
+      "version": "7.88",
+      "description": "SEGGER J-Link debug probe and J-Link Software and Documentation Pack used for flashing and debugging ECUs",
+      "vendor": "SEGGER",
+      "manufacturer": "SEGGER Microcontroller GmbH",
+      "type": "tool",
+      "keywords": [
+        "J-Link",
+        "SEGGER J-Link"
+      ],
+      "aliases": [
+        "JLink"
+      ],
+      "cpe": [],
+      "projects": [
+        "Test-Bench-HIL",
+        "ADAS-Camera-C3",
+        "BMS-Controller"
+      ],
+      "exclude_keywords": [],
+      "purl": "",
+      "osv_ecosystem": "",
+      "osv_package": "",
+      "category": "",
+      "enabled": true,
+      "id": "jlink"
+    },
+    {
+      "name": "S32K144",
+      "version": "",
+      "description": "NXP S32K1 automotive 32-bit Arm Cortex-M4F microcontroller (body / BMS ECU)",
+      "vendor": "NXP",
+      "manufacturer": "NXP Semiconductors",
+      "type": "hardware",
+      "keywords": [
+        "S32K144",
+        "S32K1"
+      ],
+      "aliases": [
+        "NXP S32K"
+      ],
+      "cpe": [],
+      "projects": [
+        "BMS-Controller"
+      ],
+      "exclude_keywords": [],
+      "purl": "",
+      "osv_ecosystem": "",
+      "osv_package": "",
+      "category": "",
+      "enabled": true,
+      "id": "s32k144"
+    },
+    {
+      "name": "STM32F407",
+      "version": "",
+      "description": "STMicroelectronics STM32F4 microcontroller used on the test bench CAN interface",
+      "vendor": "STMicroelectronics",
+      "manufacturer": "STMicroelectronics",
+      "type": "hardware",
+      "keywords": [
+        "STM32F4",
+        "STM32F407"
+      ],
+      "aliases": [],
+      "cpe": [],
+      "projects": [
+        "Test-Bench-HIL"
+      ],
+      "exclude_keywords": [],
+      "purl": "",
+      "osv_ecosystem": "",
+      "osv_package": "",
+      "category": "",
+      "enabled": true,
+      "id": "stm32f4"
+    },
+    {
+      "name": "Python 3.10",
+      "version": "3.10",
+      "description": "CPython interpreter used for HIL test automation and flashing scripts",
+      "vendor": "Python Software Foundation",
+      "manufacturer": "Python Software Foundation",
+      "type": "software",
+      "keywords": [
+        "CPython",
+        "Python"
+      ],
+      "aliases": [
+        "python3"
+      ],
+      "cpe": [],
+      "projects": [
+        "0854_82"
+      ],
+      "exclude_keywords": [],
+      "purl": "",
+      "osv_ecosystem": "",
+      "osv_package": "",
+      "category": "Core Component",
+      "enabled": true,
+      "id": "5049dfe8"
+    },
+    {
+      "name": "Gerrit",
+      "version": "3.13",
+      "description": "",
+      "vendor": "",
+      "manufacturer": "",
+      "type": "software",
+      "keywords": [
+        "Gerrit"
+      ],
+      "aliases": [],
+      "cpe": [],
+      "projects": [],
+      "exclude_keywords": [],
+      "purl": "",
+      "osv_ecosystem": "",
+      "osv_package": "",
+      "category": "",
+      "enabled": true,
+      "id": "7ee79a45"
+    },
+    {
+      "name": "Jenkins",
+      "version": "",
+      "description": "",
+      "vendor": "",
+      "manufacturer": "",
+      "type": "software",
+      "keywords": [],
+      "aliases": [],
+      "cpe": [],
+      "projects": [],
+      "exclude_keywords": [],
+      "purl": "",
+      "osv_ecosystem": "",
+      "osv_package": "",
+      "category": "",
+      "enabled": true,
+      "id": "b884b197"
+    }
+  ]
+}

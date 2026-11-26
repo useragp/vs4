@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vulnerability Report 2026-11-25T20:54:44</title>
+<style>
+body{font-family:"Segoe UI",Arial,sans-serif;margin:0 auto;padding:16px clamp(10px,1.5vw,24px);width:100%;max-width:none;box-sizing:border-box;color:#1f2937;background:#f3f6fa}
+h1{margin:0 0 4px;font-size:22px} h2{font-size:17px;margin:18px 0 8px}
+.meta{color:#555;font-size:13px}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:14px;margin:14px 0}
+.card{background:#fff;border:1px solid #e3e8ef;border-radius:10px;padding:14px 18px;box-shadow:0 3px 12px rgba(25,40,60,.06);min-width:105px}
+.card .n{font-size:24px;font-weight:600} .card .l{font-size:12px;color:#666}
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;align-items:stretch}
+.chart{background:#fff;border:1px solid #e3e8ef;border-radius:10px;padding:16px;box-shadow:0 3px 12px rgba(25,40,60,.06);width:auto;min-width:0}
+.chart h3{margin:0 0 6px;font-size:14px}
+.chart .body{display:flex;gap:10px;align-items:flex-start}
+.legend{font-size:11px;max-height:150px;overflow:auto;flex:1}
+.legend div{display:flex;align-items:center;gap:5px;cursor:pointer;padding:1px 0}
+.legend div:hover{text-decoration:underline}
+.sw{width:11px;height:11px;border-radius:2px;flex:none}
+.toolbar{margin:8px 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px}
+.tablewrap{overflow-x:auto;overflow-y:hidden;height:auto;width:100%;scrollbar-width:none;background:#fff;border:1px solid #cbd5e1;border-radius:9px;box-shadow:0 2px 8px rgba(25,40,60,.05);overscroll-behavior:contain;scrollbar-gutter:stable}
+table{border-collapse:separate;border-spacing:0;font-size:12px;min-width:100%;width:max-content;table-layout:auto;max-width:none}
+th,td{border-bottom:1px solid #cbd5e1;border-right:1px solid #d3dce7;padding:7px 9px;vertical-align:top;text-align:left;line-height:1.35;white-space:normal;overflow-wrap:anywhere;word-break:normal}
+thead tr.h th{background:#243447;color:#fff;position:relative;cursor:pointer;white-space:nowrap;z-index:2;user-select:none}
+thead tr.f th{background:#eceff1;position:relative;z-index:2}
+.tablewrap::-webkit-scrollbar{display:none}
+.findings{position:relative}
+.hscroll{position:sticky;bottom:0;overflow-x:auto;overflow-y:hidden;height:16px;z-index:5;background:#f3f6fa}
+.hscroll div{height:1px}
+thead input,thead select{width:100%;min-width:60px;box-sizing:border-box;font-size:11px}
+.multi-filter{position:relative;text-align:left;font-size:11px}.multi-filter summary{cursor:pointer;background:#fff;padding:3px;border:1px solid #ccd4df;border-radius:4px;white-space:nowrap}.filter-options{display:none;position:absolute;top:20px;left:0;z-index:10;background:#fff;border:1px solid #cbd5e1;box-shadow:0 4px 12px #0002;padding:7px;min-width:160px;max-height:220px;overflow:auto}.multi-filter[open] .filter-options{display:grid;gap:4px}.filter-options label{display:flex;gap:5px;align-items:center;white-space:nowrap}.filter-options input{width:auto}
+td.description{min-width:360px;max-width:720px} td.applicability_details{min-width:280px;max-width:560px}
+td.cvss_vector{font-family:monospace;font-size:11px}
+.pill{display:inline-block;padding:1px 7px;border-radius:9px;color:#fff;font-weight:600;font-size:11px}
+tbody tr:hover{filter:brightness(.975)}
+tbody tr[data-severity="CRITICAL"]{background:#f8e9ee} tbody tr[data-severity="HIGH"]{background:#fff0ed}
+tbody tr[data-severity="MEDIUM"]{background:#fff6e8} tbody tr[data-severity="LOW"]{background:#fffbea}
+tbody tr[data-severity="NONE"],tbody tr[data-severity="UNKNOWN"]{background:#f4f6f8}
+ul.l{margin:0;padding-left:14px}
+thead tr.h th .lbl{display:block;overflow:hidden;text-overflow:ellipsis}
+.rz{position:absolute;top:0;right:-3px;width:7px;height:100%;cursor:col-resize;z-index:3}
+.rz:hover,.rz.on{background:rgba(144,202,249,.7)}
+tbody tr{cursor:default}
+tbody tr.sel,tbody tr.sel:hover{background:#cfe3ff}
+.ctx{position:fixed;z-index:100;background:#fff;border:1px solid #b0bec5;border-radius:4px;box-shadow:0 3px 10px rgba(0,0,0,.25);
+  font-size:13px;min-width:230px;max-height:70vh;overflow:auto;padding:4px 0}
+.ctx div{padding:5px 14px;cursor:pointer;white-space:nowrap}
+.ctx div:hover{background:#e3f2fd}
+.ctx div.sep{border-top:1px solid #e0e0e0;margin:4px 0;padding:0;cursor:default}
+.ctx div.dis{color:#9e9e9e;cursor:default;background:none}
+.ctx div.hd{color:#607d8b;font-size:11px;text-transform:uppercase;cursor:default;background:none}
+#viewinfo a{color:#1565C0;cursor:pointer;text-decoration:underline}
+</style></head>
+<body>
+<h1>Vulnerability Scan Report</h1>
+<div class="meta" id="meta"></div>
+<section id="summary">
+  <h2>Summary</h2>
+  <div class="cards" id="cards"></div>
+  <div class="charts" id="charts"></div>
+</section>
+<h2>Findings</h2>
+<div class="toolbar">
+  <input id="global" placeholder="Search all columns..." size="36">
+  <button id="reset">Reset filters &amp; sorting</button>
+  <label><input type="checkbox" id="follow" checked> Summary follows filters</label>
+  <button id="export">Export visible rows (CSV)</button>
+  <button id="saveview" title="Download this report with deleted rows removed and the current column layout">Save edited report (HTML)</button>
+  <span id="count"></span> <span id="viewinfo"></span>
+  <span style="color:#777">Tip: click a header to sort (shift-click for multi-column); right-click a header to hide/show columns; drag a header edge to resize;
+  click rows to select (Ctrl/Shift for several) and right-click to hide or delete them; numeric filters accept &gt;=7, &lt;5, 5-8; click legend entries to filter.</span>
+</div>
+<div class="findings">
+<div class="tablewrap"><table id="tbl"><thead></thead><tbody></tbody></table></div>
+<div class="hscroll" id="hscroll" title="Scroll the table left / right"><div></div></div>
+</div>
+<script id="report-data" type="application/json">{"meta": {"generated": "2026-11-25T20:54:44", "lookback_days": null, "date_range": {"start": "2026-10-26 00:00 UTC", "end": "2026-11-25 19:54 UTC"}, "sources": ["NVD (CPE)", "NVD (keyword)", "CVE.org (CNA)", "OSV.dev", "CISA KEV"], "strict_mode": true, "min_applicability": "LOW", "include_rejected_candidates": false, "include_deferred": false, "date_fields": "published + last modified", "scope": "core", "categories": ["(all)"], "source_errors": [], "report_folder": "C:\\Users\\agata\\Downloads\\vuln_scanner_v5\\reports\\vuln_report_20261125_205444", "stats": {"components_scanned": 9, "vulnerabilities": 28, "applicable": 28, "not_applicable": 0, "new": 28, "old": 0, "filtered_false_positives": 1087, "below_min_applicability": 0, "deferred_excluded": 234, "modified_only_rejected": 335, "source_errors": 0, "duration_seconds": 63.4}, "rejected_candidates": []}, "summary": {"by_component": {"Jenkins": 15, "Python 3.8.10": 11, "Python 3.10 3.10": 5, "Git 2.39.2": 2}, "by_category": {"Software": 15, "Core Component": 11, "Tool": 2}, "by_source": {"NVD": 28, "CVE.org": 8}, "by_project": {"BMS-Controller": 11, "Test-Bench-HIL": 11, "0854_82": 5, "CI-Build-Infrastructure": 2, "Infotainment-IVI-2025": 2}, "by_criticality": {"HIGH": 15, "MEDIUM": 11, "CRITICAL": 1, "LOW": 1}, "by_applicability": {"MEDIUM": 15, "HIGH": 13}}, "columns": [{"key": "component_name", "label": "Component name", "type": "list"}, {"key": "version", "label": "Version", "type": "list"}, {"key": "id", "label": "Vulnerability ID", "type": "text"}, {"key": "criticality", "label": "Criticality", "type": "severity"}, {"key": "status", "label": "Status", "type": "enum"}, {"key": "cvss_score", "label": "CVSS Score", "type": "number"}, {"key": "cvss_version", "label": "CVSS Version", "type": "enum"}, {"key": "applicability", "label": "Applicability", "type": "applicability"}, {"key": "components", "label": "Components", "type": "list"}, {"key": "projects", "label": "Projects", "type": "list"}, {"key": "sources", "label": "Sources", "type": "list"}, {"key": "match_methods", "label": "Match Method", "type": "list"}, {"key": "kev", "label": "Known Exploited (CISA KEV)", "type": "enum"}, {"key": "cwes", "label": "CWE", "type": "list"}, {"key": "published", "label": "Published", "type": "date"}, {"key": "last_modified", "label": "Last Modified", "type": "date"}, {"key": "nvd_status", "label": "NVD Status", "type": "enum"}, {"key": "description", "label": "Description", "type": "text"}, {"key": "applicability_details", "label": "Applicability Details", "type": "list"}, {"key": "cvss_vector", "label": "CVSS Vector", "type": "text"}], "rows": [{"status": "NEW", "id": "CVE-2026-115557", "aliases": [], "criticality": "CRITICAL", "cvss_score": 9.4, "cvss_version": "4.0", "cvss_vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:P/VC:H/VI:H/VA:H/SC:H/SI:H/SA:H/E:X/CR:X/IR:X/AR:X/MAV:X/MAC:X/MAT:X/MPR:X/MUI:X/MVC:X/MVI:X/MVA:X/MSC:X/MSI:X/MSA:X/S:X/AU:X/R:X/V:X/RE:X/U:X", "applicability": "HIGH", "applicability_details": ["Python 3.10 3.10: HIGH [core component] (CVE.org (CNA): Python Software Foundation CPython 3.10 is in affected range [< 3.11.18])", "Python 3.8.10: HIGH [core component] (CVE.org (CNA): Python Software Foundation CPython 3.8.10 is in affected range [< 3.11.18])"], "component_name": ["Python 3.10", "Python"], "version": ["3.10", "3.8.10"], "components": ["Python 3.10 3.10", "Python 3.8.10"], "component_count": 2, "categories": ["Core Component"], "projects": ["0854_82", "BMS-Controller", "Test-Bench-HIL"], "sources": ["CVE.org", "NVD"], "match_methods": ["Python 3.10 3.10: NVD keyword search 'Python'; description contains 'Python'; confirmed by CVE.org CNA data; in scan period by last-modified date 2026-11-02 (published 2026-10-24)", "Python 3.8.10: NVD keyword search 'Python'; description contains 'Python'; confirmed by CVE.org CNA data; in scan period by last-modified date 2026-11-02 (published 2026-10-24)"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-299"], "published": "2026-10-24", "last_modified": "2026-11-02", "nvd_status": "Awaiting Analysis", "description": "Python has added a denylist for known compromised certificates to the \"ssl\" module to ensure user safety even without certificate revocation configured. Known compromised certificates will automatically be rejected regardless of the SSLContext policy configuration.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-111760", "aliases": [], "criticality": "HIGH", "cvss_score": 8.0, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:L/UI:R/S:C/C:H/I:H/A:H", "applicability": "HIGH", "applicability_details": ["Git 2.39.2: HIGH [core component] (CVE.org (CNA): git git 2.39.2 is in affected range [< 2.50.2])"], "component_name": ["Git"], "version": ["2.39.2"], "components": ["Git 2.39.2"], "component_count": 1, "categories": ["Tool"], "projects": ["CI-Build-Infrastructure", "Infotainment-IVI-2025"], "sources": ["CVE.org", "NVD"], "match_methods": ["NVD keyword search 'Git'; description contains 'Git'; confirmed by CVE.org CNA data"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-59"], "published": "2026-11-16", "last_modified": "2026-11-17", "nvd_status": "Received", "description": "Git is a fast, scalable, distributed revision control system with an unusually rich command set that provides both high-level operations and full access to internals. Prior to 2.50.2, 2.51.3, 2.52.1, 2.53.1, 2.54.1, 2.55.1, and 2.56.1, an attacker-controlled repository hosted by the attacker rather than on a normal forge site can exploit git clone --recurse-submodules by causing Git to overwrite a submodule gitfile with a symbolic link. The symbolic link can point to a directory containing attacker-controlled Git configuration or hooks, allowing those hooks or configuration to execute code on the cloning user's system. The issue requires the recursive-submodule option, and users should avoid cloning repositories from untrusted sources. This issue is fixed in versions 2.50.2, 2.51.3, 2.52.1, 2.53.1, 2.54.1, 2.55.1, and 2.56.1.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2023-29007", "aliases": [], "criticality": "HIGH", "cvss_score": 7.8, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H", "applicability": "HIGH", "applicability_details": ["Git 2.39.2: HIGH [core component] (NVD CPE range match: git-scm:git 2.39.2 is in [>= 2.39.0, < 2.39.3])"], "component_name": ["Git"], "version": ["2.39.2"], "components": ["Git 2.39.2"], "component_count": 1, "categories": ["Tool"], "projects": ["CI-Build-Infrastructure", "Infotainment-IVI-2025"], "sources": ["NVD"], "match_methods": ["NVD CPE search 'cpe:2.3:a:git-scm:git'; confirmed by NVD configuration; in scan period by last-modified date 2026-11-02 (published 2023-04-25)", "NVD keyword search 'Git'; description contains 'Git'; confirmed by NVD configuration; in scan period by last-modified date 2026-11-02 (published 2023-04-25)"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-74"], "published": "2023-04-25", "last_modified": "2026-11-02", "nvd_status": "Modified", "description": "Git is a revision control system. Prior to versions 2.30.9, 2.31.8, 2.32.7, 2.33.8, 2.34.8, 2.35.8, 2.36.6, 2.37.7, 2.38.5, 2.39.3, and 2.40.1, a specially crafted `.gitmodules` file with submodule URLs that are longer than 1024 characters can used to exploit a bug in `config.c::git_config_copy_or_rename_section_in_file()`. This bug can be used to inject arbitrary configuration into a user's `$GIT_DIR/config` when attempting to remove the configuration section associated with that submodule. When the attacker injects configuration values which specify executables to run (such as `core.pager`, `core.editor`, `core.sshCommand`, etc.) this can lead to a remote code execution. A fix A fix is available in versions 2.30.9, 2.31.8, 2.32.7, 2.33.8, 2.34.8, 2.35.8, 2.36.6, 2.37.7, 2.38.5, 2.39.3, and 2.40.1. As a workaround, avoid running `git submodule deinit` on untrusted repositories or without prior inspection of any submodule sections in `$GIT_DIR/config`.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2024-9287", "aliases": [], "criticality": "HIGH", "cvss_score": 7.8, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H", "applicability": "HIGH", "applicability_details": ["Python 3.8.10: HIGH [core component] (NVD CPE range match: python:python 3.8.10 is in [< 3.9.21])"], "component_name": ["Python"], "version": ["3.8.10"], "components": ["Python 3.8.10"], "component_count": 1, "categories": ["Core Component"], "projects": ["BMS-Controller", "Test-Bench-HIL"], "sources": ["NVD"], "match_methods": ["NVD CPE search 'cpe:2.3:a:python:python'; confirmed by NVD configuration; in scan period by last-modified date 2026-10-30 (published 2024-10-22)", "NVD keyword search 'CPython'; description contains 'Python', 'CPython'; confirmed by NVD configuration; in scan period by last-modified date 2026-10-30 (published 2024-10-22)"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-428", "CWE-77"], "published": "2024-10-22", "last_modified": "2026-10-30", "nvd_status": "Modified", "description": "A vulnerability has been found in the CPython `venv` module and CLI where path names provided when creating a virtual environment were not quoted properly, allowing the creator to inject commands into virtual environment \"activation\" scripts (ie \"source venv/bin/activate\"). This means that attacker-controlled virtual environments are able to run commands when the virtual environment is activated. Virtual environments which are not created by an attacker or which aren't activated before being used (ie \"./venv/bin/python\") are not affected.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-19553", "aliases": [], "criticality": "HIGH", "cvss_score": 7.6, "cvss_version": "4.0", "cvss_vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:P/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N/E:X/CR:X/IR:X/AR:X/MAV:X/MAC:X/MAT:X/MPR:X/MUI:X/MVC:X/MVI:X/MVA:X/MSC:X/MSI:X/MSA:X/S:X/AU:X/R:X/V:X/RE:X/U:X", "applicability": "HIGH", "applicability_details": ["Python 3.10 3.10: HIGH [core component] (CVE.org (CNA): Python Software Foundation CPython 3.10 is in affected range [< 3.10.22])", "Python 3.8.10: HIGH [core component] (CVE.org (CNA): Python Software Foundation CPython 3.8.10 is in affected range [< 3.10.22])"], "component_name": ["Python 3.10", "Python"], "version": ["3.10", "3.8.10"], "components": ["Python 3.10 3.10", "Python 3.8.10"], "component_count": 2, "categories": ["Core Component"], "projects": ["0854_82", "BMS-Controller", "Test-Bench-HIL"], "sources": ["CVE.org", "NVD"], "match_methods": ["Python 3.10 3.10: NVD keyword search 'Python'; description contains 'Python'; confirmed by CVE.org CNA data; in scan period by last-modified date 2026-11-10 (published 2026-09-30)", "Python 3.8.10: NVD keyword search 'Python'; description contains 'Python'; confirmed by CVE.org CNA data; in scan period by last-modified date 2026-11-10 (published 2026-09-30)"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-297"], "published": "2026-09-30", "last_modified": "2026-11-10", "nvd_status": "Awaiting Analysis", "description": "ssl.SSLContext.wrap_bio() didn't require the server_hostname argument\nto not be None if ssl.SSLContext.check_hostname was set. Due to a\nmissing parameter check in SSLObject, if the server_hostname argument\nisn't supplied then hostname verification would be silently skipped.\n\n\nThis defect could lead to programs where certificate hostname verification\n*appeared* to be succeeding with SSLContext.check_hostname = True and no\nValueError being raised due to misconfiguration.\n\n\nIf the program passes a server_hostname value that isn't an empty string\nor None to any of these APIs then certificate hostname verification\nproceeds as expected and the program is not affected by this vulnerability.\n\n\nMitigating this vulnerability doesn't require updating Python or applying\nthe patch. To mitigate, pass a valid non-None and non-empty\nserver_hostname value to SSLContext.wrap_bio(),\nasyncio.create_connection(), or asyncio.loop.start_tls() and\ncertificate hostname verification will proceed as expected. Upgrading to\nthe latest version of Python or applying the patch only changes the\nbehavior from silently skipping hostname verification to raising a\nValueError, similar to SSLContext.wrap_socket(), when server_hostname\nisn't supplied.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-15308", "aliases": [], "criticality": "HIGH", "cvss_score": 7.5, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H", "applicability": "HIGH", "applicability_details": ["Python 3.8.10: HIGH [core component] (NVD CPE range match: python:python 3.8.10 is in [< 3.10.21])"], "component_name": ["Python"], "version": ["3.8.10"], "components": ["Python 3.8.10"], "component_count": 1, "categories": ["Core Component"], "projects": ["BMS-Controller", "Test-Bench-HIL"], "sources": ["NVD"], "match_methods": ["NVD CPE search 'cpe:2.3:a:python:python'; confirmed by NVD configuration; in scan period by last-modified date 2026-11-10 (published 2026-07-09)"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-400"], "published": "2026-07-09", "last_modified": "2026-11-10", "nvd_status": "Modified", "description": "The incremental HTML parser (html.parser.HTMLParser) allows for CPU\ndenial-of-service through repeated unterminated markup declarations when\nprocessing uncontrolled data.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-3087", "aliases": [], "criticality": "HIGH", "cvss_score": 7.5, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N", "applicability": "HIGH", "applicability_details": ["Python 3.8.10: HIGH [core component] (NVD CPE range match: python:python 3.8.10 is in [<= 3.14.4])"], "component_name": ["Python"], "version": ["3.8.10"], "components": ["Python 3.8.10"], "component_count": 1, "categories": ["Core Component"], "projects": ["BMS-Controller", "Test-Bench-HIL"], "sources": ["NVD"], "match_methods": ["NVD CPE search 'cpe:2.3:a:python:python'; confirmed by NVD configuration; in scan period by last-modified date 2026-10-26 (published 2026-04-27)"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-22"], "published": "2026-04-27", "last_modified": "2026-10-26", "nvd_status": "Modified", "description": "If `shutil.unpack_archive()` is given a ZIP archive with an absolute Windows path containing a drive (`C:\\\\...`) then the archive will be extracted outside the target directory which is different than other operating systems. Only Windows is affected by this vulnerability.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-7210", "aliases": [], "criticality": "HIGH", "cvss_score": 7.5, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H", "applicability": "HIGH", "applicability_details": ["Python 3.8.10: HIGH [core component] (NVD CPE range match: python:python 3.8.10 is in [< 3.13.14])"], "component_name": ["Python"], "version": ["3.8.10"], "components": ["Python 3.8.10"], "component_count": 1, "categories": ["Core Component"], "projects": ["BMS-Controller", "Test-Bench-HIL"], "sources": ["NVD"], "match_methods": ["NVD CPE search 'cpe:2.3:a:python:python'; confirmed by NVD configuration; in scan period by last-modified date 2026-10-26 (published 2026-05-11)"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-331"], "published": "2026-05-11", "last_modified": "2026-10-26", "nvd_status": "Modified", "description": "`xml.parsers.expat` and `xml.etree.ElementTree` use insufficient entropy for Expat hash-flooding protection, which allows a crafted XML document to trigger hash flooding.\\r\\n\\r\\nFully mitigating this vulnerability requires both updating libexpat to 2.8.0 or later and applying this patch.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-6019", "aliases": [], "criticality": "MEDIUM", "cvss_score": 6.1, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N", "applicability": "HIGH", "applicability_details": ["Python 3.8.10: HIGH [core component] (NVD CPE range match: python:python 3.8.10 is in [< 3.13.14])"], "component_name": ["Python"], "version": ["3.8.10"], "components": ["Python 3.8.10"], "component_count": 1, "categories": ["Core Component"], "projects": ["BMS-Controller", "Test-Bench-HIL"], "sources": ["NVD"], "match_methods": ["NVD CPE search 'cpe:2.3:a:python:python'; confirmed by NVD configuration; in scan period by last-modified date 2026-11-10 (published 2026-04-22)"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-116", "CWE-150"], "published": "2026-04-22", "last_modified": "2026-11-10", "nvd_status": "Modified", "description": "http.cookies.Morsel.js_output() returns an inline <script> snippet and only escapes \" for JavaScript string context. It does not neutralize the HTML parser-sensitive sequence <\/script> inside the generated script element. Mitigation base64-encodes the cookie value to disallow escaping using cookie value.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-2297", "aliases": [], "criticality": "MEDIUM", "cvss_score": 5.5, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:N", "applicability": "HIGH", "applicability_details": ["Python 3.8.10: HIGH [core component] (NVD CPE range match: python:python 3.8.10 is in [< 3.10.21])"], "component_name": ["Python"], "version": ["3.8.10"], "components": ["Python 3.8.10"], "component_count": 1, "categories": ["Core Component"], "projects": ["BMS-Controller", "Test-Bench-HIL"], "sources": ["NVD"], "match_methods": ["NVD CPE search 'cpe:2.3:a:python:python'; confirmed by NVD configuration; in scan period by last-modified date 2026-11-24 (published 2026-03-04)", "NVD keyword search 'CPython'; description contains 'CPython'; confirmed by NVD configuration; in scan period by last-modified date 2026-11-24 (published 2026-03-04)"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-668"], "published": "2026-03-04", "last_modified": "2026-11-24", "nvd_status": "Analyzed", "description": "The import hook in CPython that handles legacy *.pyc files (SourcelessFileLoader) is incorrectly handled in FileLoader (a base class) and so does not use io.open_code() to read the .pyc files. sys.audit handlers for this audit event therefore do not fire.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-115791", "aliases": [], "criticality": "MEDIUM", "cvss_score": 5.3, "cvss_version": "4.0", "cvss_vector": "CVSS:4.0/AV:L/AC:L/AT:P/PR:L/UI:A/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N/E:X/CR:X/IR:X/AR:X/MAV:X/MAC:X/MAT:X/MPR:X/MUI:X/MVC:X/MVI:X/MVA:X/MSC:X/MSI:X/MSA:X/S:X/AU:X/R:X/V:X/RE:X/U:X", "applicability": "HIGH", "applicability_details": ["Python 3.10 3.10: HIGH [core component] (CVE.org (CNA): Python Software Foundation CPython 3.10 is in affected range [< 3.16.0])", "Python 3.8.10: HIGH [core component] (CVE.org (CNA): Python Software Foundation CPython 3.8.10 is in affected range [< 3.16.0])"], "component_name": ["Python 3.10", "Python"], "version": ["3.10", "3.8.10"], "components": ["Python 3.10 3.10", "Python 3.8.10"], "component_count": 2, "categories": ["Core Component"], "projects": ["0854_82", "BMS-Controller", "Test-Bench-HIL"], "sources": ["CVE.org", "NVD"], "match_methods": ["Python 3.10 3.10: NVD keyword search 'Python'; description contains 'Python'; confirmed by CVE.org CNA data", "Python 3.8.10: NVD keyword search 'Python'; description contains 'Python'; confirmed by CVE.org CNA data"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-829"], "published": "2026-11-10", "last_modified": "2026-11-11", "nvd_status": "Awaiting Analysis", "description": "When tarfile or zipfile command line interface (CLI) is used to\n\ndecompress an archive, a Python script shadowing the stdlib can be\n\ncreated. Then if an error occurs during decompressing the next file,\n\nthe newly created Python script is executed. This is especially true\n\nif the created Python is called traceback.py. The problem is that\n\nPython adds the current directory to sys.path when python -m MODULE is\n\nrun, and the archive is also decompressed in the current directory.\n\n\n\nThe fix removes sys.path[0] in gzip, tarfile and zipfile command line\n\ninterface to prevent shadowing standard library modules from extracted\n\nfiles.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-5713", "aliases": [], "criticality": "MEDIUM", "cvss_score": 5.3, "cvss_version": "4.0", "cvss_vector": "CVSS:4.0/AV:L/AC:H/AT:P/PR:H/UI:A/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N/E:X/CR:X/IR:X/AR:X/MAV:X/MAC:X/MAT:X/MPR:X/MUI:X/MVC:X/MVI:X/MVA:X/MSC:X/MSI:X/MSA:X/S:X/AU:X/R:X/V:X/RE:X/U:X", "applicability": "HIGH", "applicability_details": ["Python 3.10 3.10: HIGH [core component] (CVE.org (CNA): Python Software Foundation CPython 3.10 is in affected range [< 3.14.5])", "Python 3.8.10: HIGH [core component] (CVE.org (CNA): Python Software Foundation CPython 3.8.10 is in affected range [< 3.14.5])"], "component_name": ["Python 3.10", "Python"], "version": ["3.10", "3.8.10"], "components": ["Python 3.10 3.10", "Python 3.8.10"], "component_count": 2, "categories": ["Core Component"], "projects": ["0854_82", "BMS-Controller", "Test-Bench-HIL"], "sources": ["CVE.org", "NVD"], "match_methods": ["Python 3.10 3.10: NVD keyword search 'Python'; description contains 'Python'; confirmed by CVE.org CNA data; in scan period by last-modified date 2026-10-26 (published 2026-04-14)", "Python 3.8.10: NVD keyword search 'Python'; description contains 'Python'; confirmed by CVE.org CNA data; in scan period by last-modified date 2026-10-26 (published 2026-04-14)"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-121", "CWE-125"], "published": "2026-04-14", "last_modified": "2026-10-26", "nvd_status": "Awaiting Analysis", "description": "The \"profiling.sampling\" module (Python 3.15+) and \"asyncio introspection capabilities\" (3.14+, \"python -m asyncio ps\" and \"python -m asyncio pstree\") features could be used to read and write addresses in a privileged process if that process connected to a malicious or \"infected\" Python process via the remote debugging feature. This vulnerability requires persistently and repeatedly connecting to the process to be exploited, even after the connecting process crashes with high likelihood due to ASLR.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-15310", "aliases": [], "criticality": "LOW", "cvss_score": 2.1, "cvss_version": "4.0", "cvss_vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:A/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N/E:X/CR:X/IR:X/AR:X/MAV:X/MAC:X/MAT:X/MPR:X/MUI:X/MVC:X/MVI:X/MVA:X/MSC:X/MSI:X/MSA:X/S:X/AU:X/R:X/V:X/RE:X/U:X", "applicability": "HIGH", "applicability_details": ["Python 3.10 3.10: HIGH [core component] (CVE.org (CNA): Python Software Foundation CPython 3.10 is in affected range [< 3.10.22])", "Python 3.8.10: HIGH [core component] (CVE.org (CNA): Python Software Foundation CPython 3.8.10 is in affected range [< 3.10.22])"], "component_name": ["Python 3.10", "Python"], "version": ["3.10", "3.8.10"], "components": ["Python 3.10 3.10", "Python 3.8.10"], "component_count": 2, "categories": ["Core Component"], "projects": ["0854_82", "BMS-Controller", "Test-Bench-HIL"], "sources": ["CVE.org", "NVD"], "match_methods": ["Python 3.10 3.10: NVD keyword search 'Python'; description contains 'Python'; confirmed by CVE.org CNA data; in scan period by last-modified date 2026-11-10 (published 2026-08-25)", "Python 3.8.10: NVD keyword search 'Python'; description contains 'Python'; confirmed by CVE.org CNA data; in scan period by last-modified date 2026-11-10 (published 2026-08-25)"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-400"], "published": "2026-08-25", "last_modified": "2026-11-10", "nvd_status": "Awaiting Analysis", "description": "When decompressing crafted zip files using the bzip/LZMA/Zstandard \n\ncompressions, Python could use an attacker-controlled size to \n\npre-allocate memory, possibly resulting in memory exhaustion.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-117612", "aliases": [], "criticality": "HIGH", "cvss_score": 8.8, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H", "applicability": "MEDIUM", "applicability_details": ["Jenkins: MEDIUM [core component] (NVD: jenkins:jenkins affected (< 2.580.2); component version unknown)"], "component_name": ["Jenkins"], "version": [""], "components": ["Jenkins"], "component_count": 1, "categories": ["Software"], "projects": [], "sources": ["NVD"], "match_methods": ["NVD keyword search 'Jenkins'; description contains 'Jenkins'; product confirmed by NVD configuration"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-502"], "published": "2026-10-28", "last_modified": "2026-11-05", "nvd_status": "Modified", "description": "Jenkins 2.587 and earlier, LTS 2.580.1 and earlier does not apply its deserialization filter to classes referenced by the `resolves-to` attribute during XStream deserialization.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-117614", "aliases": [], "criticality": "HIGH", "cvss_score": 8.8, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H", "applicability": "MEDIUM", "applicability_details": ["Jenkins: MEDIUM [core component] (NVD: jenkins:jenkins affected (< 2.580.2); component version unknown)"], "component_name": ["Jenkins"], "version": [""], "components": ["Jenkins"], "component_count": 1, "categories": ["Software"], "projects": [], "sources": ["NVD"], "match_methods": ["NVD keyword search 'Jenkins'; description contains 'Jenkins'; product confirmed by NVD configuration"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-862"], "published": "2026-10-28", "last_modified": "2026-11-05", "nvd_status": "Modified", "description": "Jenkins 2.587 and earlier, LTS 2.580.1 and earlier converts the launch commands in older agent configurations into launchers provided by the Command Agent Launcher Plugin without checking whether they have been approved by an administrator, allowing attackers with Agent/Configure permission to execute arbitrary code in the context of the Jenkins controller JVM.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-117616", "aliases": [], "criticality": "HIGH", "cvss_score": 8.8, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H", "applicability": "MEDIUM", "applicability_details": ["Jenkins: MEDIUM [core component] (NVD: jenkins:jenkins affected (< 2.580.2); component version unknown)"], "component_name": ["Jenkins"], "version": [""], "components": ["Jenkins"], "component_count": 1, "categories": ["Software"], "projects": [], "sources": ["NVD"], "match_methods": ["NVD keyword search 'Jenkins'; description contains 'Jenkins'; product confirmed by NVD configuration"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-22"], "published": "2026-10-28", "last_modified": "2026-11-09", "nvd_status": "Modified", "description": "Jenkins 2.587 and earlier, LTS 2.580.1 and earlier provides an HTTP endpoint that loads agents by name without validating the name, allowing attackers with Overall/Read permission to load any config.xml file on the controller file system as an agent configuration, and to overwrite an arbitrary config.xml file when that agent is saved, potentially resulting in arbitrary code execution.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-117620", "aliases": [], "criticality": "HIGH", "cvss_score": 8.8, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H", "applicability": "MEDIUM", "applicability_details": ["Jenkins: MEDIUM [core component] (NVD: jenkins:jenkins affected (< 2.580.2); component version unknown)"], "component_name": ["Jenkins"], "version": [""], "components": ["Jenkins"], "component_count": 1, "categories": ["Software"], "projects": [], "sources": ["NVD"], "match_methods": ["NVD keyword search 'Jenkins'; description contains 'Jenkins'; product confirmed by NVD configuration"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-94"], "published": "2026-10-28", "last_modified": "2026-11-05", "nvd_status": "Modified", "description": "Jenkins 2.587 and earlier, LTS 2.580.1 and earlier allows attackers with Overall/Read permission to trigger warnings in the \"Manage Old Data\" feature that can be acted on by administrators to inject attacker-controlled data, overriding existing user account information, including login passwords.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-117624", "aliases": [], "criticality": "HIGH", "cvss_score": 8.8, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H", "applicability": "MEDIUM", "applicability_details": ["Jenkins: MEDIUM [core component] (NVD: jenkins:jenkins affected (< 2.580.2); component version unknown)"], "component_name": ["Jenkins"], "version": [""], "components": ["Jenkins"], "component_count": 1, "categories": ["Software"], "projects": [], "sources": ["NVD"], "match_methods": ["NVD keyword search 'Jenkins'; description contains 'Jenkins'; product confirmed by NVD configuration"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-502"], "published": "2026-10-28", "last_modified": "2026-11-05", "nvd_status": "Modified", "description": "Jenkins 2.587 and earlier, LTS 2.580.1 and earlier does not consistently enforce the restriction on deserializing objects of types marked as storing their configuration in independent top-level configuration files as nested values, allowing attackers to bypass the root element check and potentially inject nested objects.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-117617", "aliases": [], "criticality": "HIGH", "cvss_score": 8.1, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:H", "applicability": "MEDIUM", "applicability_details": ["Jenkins: MEDIUM [core component] (NVD: jenkins:jenkins affected (< 2.580.2); component version unknown)"], "component_name": ["Jenkins"], "version": [""], "components": ["Jenkins"], "component_count": 1, "categories": ["Software"], "projects": [], "sources": ["NVD"], "match_methods": ["NVD keyword search 'Jenkins'; description contains 'Jenkins'; product confirmed by NVD configuration"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-59"], "published": "2026-10-28", "last_modified": "2026-11-05", "nvd_status": "Modified", "description": "Jenkins 2.587 and earlier, LTS 2.580.1 and earlier checks for symbolic links in the path of an extracted file only before creating its parent directories, not immediately before writing it, and allows symbolic links in artifacts to replace existing files or empty directories, allowing attackers with Item/Configure permission to write files to arbitrary locations on the Jenkins controller file system.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-117618", "aliases": [], "criticality": "HIGH", "cvss_score": 8.1, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H", "applicability": "MEDIUM", "applicability_details": ["Jenkins: MEDIUM [core component] (NVD: jenkins:jenkins affected (< 2.580.2); component version unknown)"], "component_name": ["Jenkins"], "version": [""], "components": ["Jenkins"], "component_count": 1, "categories": ["Software"], "projects": [], "sources": ["NVD"], "match_methods": ["NVD keyword search 'Jenkins'; description contains 'Jenkins'; product confirmed by NVD configuration"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-362"], "published": "2026-10-28", "last_modified": "2026-11-05", "nvd_status": "Modified", "description": "In Jenkins 2.587 and earlier, LTS 2.580.1 and earlier, the HTTP endpoint for creating the first user account does not check whether the setup wizard has been completed, resulting in a race condition that allows unauthenticated attackers to create an administrator account while the initial user account is being replaced.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-117619", "aliases": [], "criticality": "HIGH", "cvss_score": 8.1, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:N", "applicability": "MEDIUM", "applicability_details": ["Jenkins: MEDIUM [core component] (NVD: jenkins:jenkins affected (< 2.580.2); component version unknown)"], "component_name": ["Jenkins"], "version": [""], "components": ["Jenkins"], "component_count": 1, "categories": ["Software"], "projects": [], "sources": ["NVD"], "match_methods": ["NVD keyword search 'Jenkins'; description contains 'Jenkins'; product confirmed by NVD configuration"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-384"], "published": "2026-10-28", "last_modified": "2026-11-05", "nvd_status": "Modified", "description": "Jenkins 2.587 and earlier, LTS 2.580.1 and earlier allows requests authenticated using HTTP Basic authentication, including with an API token, to obtain a \"remember me\" cookie, allowing attackers who have obtained a user's API token to retain access to Jenkins using a \"remember me\" cookie after the API token is revoked or expires.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-117615", "aliases": [], "criticality": "MEDIUM", "cvss_score": 6.5, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N", "applicability": "MEDIUM", "applicability_details": ["Jenkins: MEDIUM [core component] (NVD: jenkins:jenkins affected (< 2.580.2); component version unknown)"], "component_name": ["Jenkins"], "version": [""], "components": ["Jenkins"], "component_count": 1, "categories": ["Software"], "projects": [], "sources": ["NVD"], "match_methods": ["NVD keyword search 'Jenkins'; description contains 'Jenkins'; product confirmed by NVD configuration"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-59"], "published": "2026-10-28", "last_modified": "2026-11-05", "nvd_status": "Modified", "description": "Jenkins 2.587 and earlier, LTS 2.580.1 and earlier follows symbolic links when copying the directory of an item being renamed, allowing attackers with Item/Create and Item/Configure permission to read arbitrary files on the Jenkins controller file system.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-117621", "aliases": [], "criticality": "MEDIUM", "cvss_score": 6.1, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N", "applicability": "MEDIUM", "applicability_details": ["Jenkins: MEDIUM [core component] (NVD: jenkins:jenkins affected (< 2.580.2); component version unknown)"], "component_name": ["Jenkins"], "version": [""], "components": ["Jenkins"], "component_count": 1, "categories": ["Software"], "projects": [], "sources": ["NVD"], "match_methods": ["NVD keyword search 'Jenkins'; description contains 'Jenkins'; product confirmed by NVD configuration"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-79"], "published": "2026-10-28", "last_modified": "2026-11-05", "nvd_status": "Modified", "description": "Jenkins 2.587 and earlier, LTS 2.580.1 and earlier computes on the agent the URL of the link shown in the workspace browser for each file and directory, resulting in a cross-site scripting (XSS) vulnerability exploitable by attackers in control of agent processes.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-117622", "aliases": [], "criticality": "MEDIUM", "cvss_score": 6.1, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N", "applicability": "MEDIUM", "applicability_details": ["Jenkins: MEDIUM [core component] (NVD: jenkins:jenkins affected (< 2.580.2); component version unknown)"], "component_name": ["Jenkins"], "version": [""], "components": ["Jenkins"], "component_count": 1, "categories": ["Software"], "projects": [], "sources": ["NVD"], "match_methods": ["NVD keyword search 'Jenkins'; description contains 'Jenkins'; product confirmed by NVD configuration"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-79"], "published": "2026-10-28", "last_modified": "2026-11-05", "nvd_status": "Modified", "description": "Jenkins 2.587 and earlier, LTS 2.580.1 and earlier allows agents to send exceptions implementing the Stapler HttpResponse interface to the controller, resulting in a cross-site scripting (XSS) vulnerability exploitable by attackers in control of agent processes.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-117613", "aliases": [], "criticality": "MEDIUM", "cvss_score": 5.4, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:L/I:L/A:N", "applicability": "MEDIUM", "applicability_details": ["Jenkins: MEDIUM [core component] (NVD: jenkins:jenkins affected (< 2.580.2); component version unknown)"], "component_name": ["Jenkins"], "version": [""], "components": ["Jenkins"], "component_count": 1, "categories": ["Software"], "projects": [], "sources": ["NVD"], "match_methods": ["NVD keyword search 'Jenkins'; description contains 'Jenkins'; product confirmed by NVD configuration"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-502"], "published": "2026-10-28", "last_modified": "2026-11-05", "nvd_status": "Modified", "description": "Jenkins 2.587 and earlier, LTS 2.580.1 and earlier does not restrict item types in collections after deserialization, allowing attackers with access to POST config.xml API endpoints to submit crafted `config.xml` files that can lead to, e.g., stored cross-site scripting (XSS) vulnerabilities.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-117623", "aliases": [], "criticality": "MEDIUM", "cvss_score": 5.4, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:L/I:L/A:N", "applicability": "MEDIUM", "applicability_details": ["Jenkins: MEDIUM [core component] (NVD: jenkins:jenkins affected (< 2.580.2); component version unknown)"], "component_name": ["Jenkins"], "version": [""], "components": ["Jenkins"], "component_count": 1, "categories": ["Software"], "projects": [], "sources": ["NVD"], "match_methods": ["NVD keyword search 'Jenkins'; description contains 'Jenkins'; product confirmed by NVD configuration"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-79"], "published": "2026-10-28", "last_modified": "2026-11-05", "nvd_status": "Modified", "description": "Jenkins 2.587 and earlier, LTS 2.580.1 and earlier does not escape the text shown in the tooltips of breadcrumb bar overflow menu entries, resulting in a stored cross-site scripting (XSS) vulnerability exploitable by attackers with Overall/Read permission.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-117625", "aliases": [], "criticality": "MEDIUM", "cvss_score": 4.3, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:N/A:N", "applicability": "MEDIUM", "applicability_details": ["Jenkins: MEDIUM [core component] (CVE.org (CNA) lists Jenkins Project Jenkins; component version unknown)"], "component_name": ["Jenkins"], "version": [""], "components": ["Jenkins"], "component_count": 1, "categories": ["Software"], "projects": [], "sources": ["CVE.org", "NVD"], "match_methods": ["NVD keyword search 'Jenkins'; description contains 'Jenkins'; product confirmed by CVE.org CNA data"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-862"], "published": "2026-10-28", "last_modified": "2026-11-05", "nvd_status": "Awaiting Analysis", "description": "A missing permission check in Jenkins 2.587 and earlier, LTS 2.580.1 and earlier allows attackers with Overall/Read permission to obtain the server, port, user name, and no-proxy host list of the configured HTTP proxy.", "first_seen": "2026-11-25"}, {"status": "NEW", "id": "CVE-2026-117626", "aliases": [], "criticality": "MEDIUM", "cvss_score": 4.3, "cvss_version": "3.1", "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:N/A:N", "applicability": "MEDIUM", "applicability_details": ["Jenkins: MEDIUM [core component] (CVE.org (CNA) lists Jenkins Project Jenkins; component version unknown)"], "component_name": ["Jenkins"], "version": [""], "components": ["Jenkins"], "component_count": 1, "categories": ["Software"], "projects": [], "sources": ["CVE.org", "NVD"], "match_methods": ["NVD keyword search 'Jenkins'; description contains 'Jenkins'; product confirmed by CVE.org CNA data"], "kev": "NO", "kev_date_added": "", "cwes": ["CWE-22"], "published": "2026-10-28", "last_modified": "2026-11-05", "nvd_status": "Awaiting Analysis", "description": "Jenkins 2.587 and earlier, LTS 2.580.1 and earlier improperly identifies file paths attempting path traversal in the file browser for workspaces and $JENKINS_HOME/userContent/, allowing attackers with Overall/Read permission to obtain the names, sizes, and last modification times of files in the $JENKINS_HOME, and attackers with Item/Workspace permission to obtain the names of jobs that have a workspace on the same agent.", "first_seen": "2026-11-25"}], "colors": {"severity": {"CRITICAL": "7B1FA2", "HIGH": "D32F2F", "MEDIUM": "F57C00", "LOW": "FBC02D", "NONE": "9E9E9E", "UNKNOWN": "BDBDBD"}, "applicability": {"HIGH": "C62828", "MEDIUM": "EF6C00", "LOW": "558B2F", "NOT APPLICABLE": "9E9E9E"}, "status": {"NEW": "1565C0", "OLD": "757575"}}, "view": {}}</script>
+<script>
+(function(){
+"use strict";
+var D = JSON.parse(document.getElementById("report-data").textContent);
+var COLS = D.columns, ROWS = D.rows;
+var ORDER = {severity:{CRITICAL:5,HIGH:4,MEDIUM:3,LOW:2,NONE:1,UNKNOWN:0}, applicability:{HIGH:3,MEDIUM:2,LOW:1,"NOT APPLICABLE":0}};
+ROWS.forEach(function(r,i){ r.__i = i; });
+var VIEW = D.view || {};
+var hiddenCols = VIEW.hiddenCols || {}, widths = VIEW.widths || {}, hiddenRows = {}, deletedRows = {}, selected = {}, lastClicked = null, justResized = false;
+var dynStyle = document.createElement("style"); document.head.appendChild(dynStyle);
+var PALETTE = ["#1565C0","#C62828","#2E7D32","#EF6C00","#6A1B9A","#00838F","#AD1457","#9E9D24","#4E342E","#37474F","#5C6BC0","#26A69A","#FFA000","#8D6E63","#7CB342","#EC407A"];
+var state = {sort:[{key:"applicability",dir:-1},{key:"criticality",dir:-1},{key:"cvss_score",dir:-1}], filters:{}, global:""};
+var ENUM_TYPES = ["enum","severity","applicability"];
+var SELECT_LIST_KEYS = ["sources","match_methods","projects","components","categories"];
+
+function el(tag, attrs, text){ var e=document.createElement(tag); if(attrs){for(var k in attrs){ if(k==="style"){e.style.cssText=attrs[k];} else e.setAttribute(k,attrs[k]);}} if(text!==undefined&&text!==null) e.textContent=String(text); return e; }
+function asText(v){ if(v===null||v===undefined) return ""; return Array.isArray(v)? v.join(", ") : String(v); }
+function color(type,val){ var c=null; if(type==="severity") c=D.colors.severity[val]; else if(type==="applicability") c=D.colors.applicability[val]; return c?"#"+c:null; }
+
+// ---- meta + cards ----
+var m = D.meta;
+document.getElementById("meta").textContent = "Generated: " + m.generated + " | Dates: " + (m.date_fields || "published") + (m.include_deferred ? " | Deferred CVEs included" : " | Deferred CVEs excluded") + " | Scan period: " + (m.lookback_days ? "last " + m.lookback_days + (m.lookback_days===1?" day":" days") + " (" : "") + m.date_range.start + " .. " + m.date_range.end + (m.lookback_days ? ")" : "");
+
+// ---- table header ----
+var thead = document.querySelector("#tbl thead"), tbody = document.querySelector("#tbl tbody");
+var hr = el("tr",{"class":"h"}), fr = el("tr",{"class":"f"});
+COLS.forEach(function(c){
+  var th = el("th",{"data-key":c.key,"data-col":c.key,"title":"Sort by "+c.label+" (right-click for column options)"});
+  th.appendChild(el("span",{"class":"lbl"}, c.label));
+  var grip = el("div",{"class":"rz","title":"Drag to resize, double-click to reset"});
+  th.appendChild(grip); attachResize(grip, th, c.key);
+  th.addEventListener("click", function(ev){ if (justResized) { justResized=false; return; } toggleSort(c.key, ev.shiftKey); });
+  th.addEventListener("contextmenu", function(ev){ ev.preventDefault(); columnMenu(ev, c); });
+  hr.appendChild(th);
+  var fth = el("th",{"data-col":c.key}), input;
+  var distinct = distinctValues(c);
+  if (ENUM_TYPES.indexOf(c.type)>=0 || (SELECT_LIST_KEYS.indexOf(c.key)>=0 && distinct.length<=60)) {
+    input = el("details",{"class":"multi-filter"});
+    input.appendChild(el("summary",null,"(all)"));
+    var opts = el("div",{"class":"filter-options"});
+    distinct.forEach(function(v){
+      var lab=el("label"), cb=el("input",{type:"checkbox",value:v});
+      cb.addEventListener("change",function(){
+        var chosen=Array.prototype.slice.call(opts.querySelectorAll("input:checked")).map(function(x){return x.value;});
+        setFilter(c.key,chosen,true);
+        input.querySelector("summary").textContent=chosen.length?chosen.length+" selected":"(all)";
+      });
+      lab.appendChild(cb); lab.appendChild(document.createTextNode(v)); opts.appendChild(lab);
+    });
+    input.appendChild(opts);
+  } else {
+    input = el("input",{"data-key":c.key, placeholder: c.type==="number" ? ">=7" : "filter"});
+    input.addEventListener("input", function(){ setFilter(c.key, input.value, false); });
+  }
+  fth.appendChild(input); fr.appendChild(fth);
+  fth.addEventListener("contextmenu", function(ev){ if (ev.target===fth) { ev.preventDefault(); columnMenu(ev, c); } });
+});
+thead.appendChild(hr); thead.appendChild(fr);
+
+function distinctValues(c){
+  var s = {};
+  ROWS.forEach(function(r){ var v=r[c.key]; (Array.isArray(v)?v:[v]).forEach(function(x){ if(x!==null&&x!==undefined&&x!=="") s[String(x)]=1; }); });
+  var vals = Object.keys(s);
+  var ord = ORDER[c.type];
+  vals.sort(function(a,b){ return ord ? (ord[b]||0)-(ord[a]||0) : a.localeCompare(b); });
+  return vals;
+}
+function setFilter(key, value, exact){ if(value===""){ delete state.filters[key]; } else state.filters[key]={value:value, exact:exact}; render(); }
+function toggleSort(key, multi){
+  var idx = -1; state.sort.forEach(function(s,i){ if(s.key===key) idx=i; });
+  if (!multi) { var dir = (idx===0 && state.sort.length>=1) ? -state.sort[0].dir : -1; state.sort=[{key:key,dir:dir}]; }
+  else if (idx>=0) state.sort[idx].dir = -state.sort[idx].dir; else state.sort.push({key:key,dir:-1});
+  render();
+}
+
+function matchFilter(row, col, f){
+  var v = row[col.key];
+  if (f.exact) { var choices=Array.isArray(f.value)?f.value:[f.value]; return choices.length===0 || choices.some(function(x){return Array.isArray(v)?v.map(String).indexOf(x)>=0:String(v)===x;}); }
+  var q = f.value.trim();
+  if (col.type==="number") {
+    var n = (v===null||v===undefined||v==="") ? null : Number(v), mm;
+    if ((mm = q.match(/^(>=|<=|>|<|=)\s*(-?[\d.]+)$/))) {
+      if (n===null) return false; var t=Number(mm[2]);
+      return {">=":n>=t,"<=":n<=t,">":n>t,"<":n<t,"=":n===t}[mm[1]];
+    }
+    if ((mm = q.match(/^(-?[\d.]+)\s*-\s*(-?[\d.]+)$/))) { return n!==null && n>=Number(mm[1]) && n<=Number(mm[2]); }
+  }
+  var terms = q.toLowerCase().split(/\s+/).filter(Boolean), text = asText(v).toLowerCase();
+  return terms.every(function(t){ return t.charAt(0)==="!" ? (t.length===1 || text.indexOf(t.slice(1))<0) : text.indexOf(t)>=0; });
+}
+function cmp(col, a, b){
+  var x=a[col.key], y=b[col.key];
+  if (ORDER[col.type]) { x=ORDER[col.type][x]||0; y=ORDER[col.type][y]||0; return x-y; }
+  if (col.type==="number") { x=(x===null||x===undefined)?-1:Number(x); y=(y===null||y===undefined)?-1:Number(y); return x-y; }
+  return asText(x).localeCompare(asText(y), undefined, {numeric:true, sensitivity:"base"});
+}
+function visibleRows(){
+  var g = state.global.toLowerCase();
+  var rows = ROWS.filter(function(r){
+    if (deletedRows[r.__i] || hiddenRows[r.__i]) return false;
+    for (var k in state.filters){ var col = COLS.filter(function(c){return c.key===k;})[0] || {key:k, type:"list"}; if(!matchFilter(r,col,state.filters[k])) return false; }
+    if (g){ var all = COLS.map(function(c){return asText(r[c.key]);}).join(" ").toLowerCase(); if (all.indexOf(g)<0) return false; }
+    return true;
+  });
+  var specs = state.sort.map(function(s){ return {col:COLS.filter(function(c){return c.key===s.key;})[0], dir:s.dir}; });
+  rows.sort(function(a,b){ for(var i=0;i<specs.length;i++){ var r=cmp(specs[i].col,a,b); if(r!==0) return r*specs[i].dir; } return 0; });
+  return rows;
+}
+
+function renderCell(td, col, v){
+  if (col.type==="links") {
+    (v||[]).forEach(function(u){ if(/^https?:\/\//i.test(u)){ var a=el("a",{href:u,target:"_blank",rel:"noopener noreferrer"},u); td.appendChild(a); td.appendChild(el("br")); } });
+  } else if (col.type==="list" && (col.key==="applicability_details") && v && v.length) {
+    var ul=el("ul",{"class":"l"}); v.forEach(function(x){ ul.appendChild(el("li",null,x)); }); td.appendChild(ul);
+  } else if (col.key==="id" && /^CVE-/.test(v)) {
+    td.appendChild(el("a",{href:"https://nvd.nist.gov/vuln/detail/"+encodeURIComponent(v),target:"_blank",rel:"noopener noreferrer",title:"https://nvd.nist.gov/vuln/detail/"+v},v));
+  } else if (col.key==="id" && /^(GHSA|PYSEC|OSV|GO|RUSTSEC)-/.test(v)) {
+    td.appendChild(el("a",{href:"https://osv.dev/vulnerability/"+encodeURIComponent(v),target:"_blank",rel:"noopener noreferrer",title:"https://osv.dev/vulnerability/"+v},v));
+  } else if (col.key==="id") {
+    td.appendChild(el("a",{href:"https://osv.dev/vulnerability/"+encodeURIComponent(v),target:"_blank",rel:"noopener noreferrer",title:"https://osv.dev/vulnerability/"+v},v));
+  } else {
+    var c = color(col.type, v);
+    if (col.key==="status") c = v==="NEW" ? "#"+D.colors.status.NEW : "#"+D.colors.status.OLD;
+    if (col.key==="kev" && v==="YES") c = "#B71C1C";
+    if (c) td.appendChild(el("span",{"class":"pill",style:"background:"+c},v)); else td.textContent = asText(v);
+  }
+}
+
+function render(){
+  var rows = visibleRows();
+  Array.prototype.forEach.call(hr.children, function(th){
+    var k = th.getAttribute("data-key"), label = COLS.filter(function(c){return c.key===k;})[0].label, mark="";
+    state.sort.forEach(function(s,i){ if(s.key===k) mark = (s.dir>0?" \u25B2":" \u25BC") + (state.sort.length>1?(i+1):""); });
+    th.querySelector(".lbl").textContent = label + mark;
+  });
+  var frag = document.createDocumentFragment();
+  rows.forEach(function(r){
+    var tr = el("tr",{"data-i":r.__i,"data-severity":r.criticality||"UNKNOWN"});
+    if (selected[r.__i]) tr.className = "sel";
+    COLS.forEach(function(c){ var td=el("td",{"class":c.key,"data-col":c.key}); renderCell(td,c,r[c.key]); tr.appendChild(td); });
+    frag.appendChild(tr);
+  });
+  tbody.innerHTML = ""; tbody.appendChild(frag);
+  CURRENT = rows;
+  var kept = ROWS.filter(function(r){ return !deletedRows[r.__i]; });
+  document.getElementById("count").textContent = rows.length + " of " + kept.length + " vulnerabilities shown";
+  renderViewInfo();
+  renderSummary(document.getElementById("follow").checked ? rows : kept);
+}
+
+// ---- column hiding / resizing ----
+var CURRENT = [];
+function applyColumnStyles(){
+  var css = [];
+  Object.keys(hiddenCols).forEach(function(k){ if (hiddenCols[k]) css.push('#tbl [data-col="'+k+'"]{display:none}'); });
+  Object.keys(widths).forEach(function(k){ var w = widths[k];
+    css.push('#tbl th[data-col="'+k+'"],#tbl td[data-col="'+k+'"]{width:'+w+'px!important;min-width:'+w+'px!important;max-width:'+w+'px!important;overflow:hidden;overflow-wrap:anywhere}'); });
+  dynStyle.textContent = css.join("\n");
+}
+function attachResize(grip, th, key){
+  grip.addEventListener("click", function(ev){ ev.stopPropagation(); });
+  grip.addEventListener("dblclick", function(ev){ ev.stopPropagation(); delete widths[key]; applyColumnStyles(); });
+  grip.addEventListener("mousedown", function(ev){
+    ev.preventDefault(); ev.stopPropagation();
+    var startX = ev.clientX, startW = th.getBoundingClientRect().width; grip.classList.add("on");
+    function move(e){ widths[key] = Math.max(40, Math.round(startW + e.clientX - startX)); applyColumnStyles(); }
+    function up(){ document.removeEventListener("mousemove", move); document.removeEventListener("mouseup", up);
+      grip.classList.remove("on"); justResized = true; setTimeout(function(){ justResized=false; }, 0); }
+    document.addEventListener("mousemove", move); document.addEventListener("mouseup", up);
+  });
+}
+function hiddenColList(){ return COLS.filter(function(c){ return hiddenCols[c.key]; }); }
+
+// ---- context menu ----
+var menuEl = null;
+function closeMenu(){ if (menuEl) { menuEl.remove(); menuEl = null; } }
+function openMenu(ev, items){
+  closeMenu();
+  menuEl = el("div",{"class":"ctx"});
+  items.forEach(function(it){
+    if (it === "-") { menuEl.appendChild(el("div",{"class":"sep"})); return; }
+    var d = el("div",{"class": it.header ? "hd" : (it.disabled ? "dis" : "")}, it.label);
+    if (!it.disabled && !it.header) d.addEventListener("click", function(e){ e.stopPropagation(); closeMenu(); it.action(); });
+    menuEl.appendChild(d);
+  });
+  document.body.appendChild(menuEl);
+  var x = ev.clientX, y = ev.clientY, r = menuEl.getBoundingClientRect();
+  if (x + r.width > window.innerWidth) x = Math.max(0, window.innerWidth - r.width - 4);
+  if (y + r.height > window.innerHeight) y = Math.max(0, window.innerHeight - r.height - 4);
+  menuEl.style.left = x + "px"; menuEl.style.top = y + "px";
+}
+document.addEventListener("click", function(e){ if (menuEl && !menuEl.contains(e.target)) closeMenu(); });
+window.addEventListener("blur", closeMenu);
+document.querySelector(".tablewrap").addEventListener("scroll", closeMenu);
+function columnMenu(ev, c){
+  var items = [{label: "Hide column \u201c" + c.label + "\u201d", action: function(){ hiddenCols[c.key] = true; applyColumnStyles(); renderViewInfo(); },
+                disabled: COLS.length - hiddenColList().length <= 1}];
+  items.push({label: "Reset width of \u201c" + c.label + "\u201d", action: function(){ delete widths[c.key]; applyColumnStyles(); }, disabled: !widths[c.key]});
+  items.push("-");
+  var hidden = hiddenColList();
+  items.push({label: "Hidden columns", header: true});
+  if (!hidden.length) items.push({label: "(none)", disabled: true});
+  hidden.forEach(function(h){ items.push({label: "Show \u201c" + h.label + "\u201d", action: function(){ delete hiddenCols[h.key]; applyColumnStyles(); renderViewInfo(); }}); });
+  items.push("-");
+  items.push({label: "Show all columns", action: function(){ hiddenCols = {}; applyColumnStyles(); renderViewInfo(); }, disabled: !hidden.length});
+  items.push({label: "Reset all column widths", action: function(){ widths = {}; applyColumnStyles(); }, disabled: !Object.keys(widths).length});
+  openMenu(ev, items);
+}
+
+// ---- row selection, hiding and deleting ----
+function selCount(){ return Object.keys(selected).length; }
+function setSelection(ids){ selected = {}; ids.forEach(function(i){ selected[i] = true; }); paintSelection(); }
+function paintSelection(){ Array.prototype.forEach.call(tbody.children, function(tr){ tr.className = selected[tr.getAttribute("data-i")] ? "sel" : ""; }); }
+tbody.addEventListener("click", function(ev){
+  if (ev.target.closest("a")) return;
+  var tr = ev.target.closest("tr"); if (!tr) return;
+  var i = Number(tr.getAttribute("data-i"));
+  if (ev.shiftKey && lastClicked !== null) {
+    var ids = CURRENT.map(function(r){ return r.__i; }), a = ids.indexOf(lastClicked), b = ids.indexOf(i);
+    if (a >= 0 && b >= 0) { if (!(ev.ctrlKey || ev.metaKey)) selected = {}; ids.slice(Math.min(a,b), Math.max(a,b)+1).forEach(function(x){ selected[x] = true; }); }
+    if (window.getSelection) window.getSelection().removeAllRanges();
+  } else if (ev.ctrlKey || ev.metaKey) {
+    if (selected[i]) delete selected[i]; else selected[i] = true; lastClicked = i;
+  } else {
+    selected = {}; selected[i] = true; lastClicked = i;
+  }
+  paintSelection(); renderViewInfo();
+});
+tbody.addEventListener("contextmenu", function(ev){
+  var tr = ev.target.closest("tr"); if (!tr) return;
+  ev.preventDefault();
+  var i = Number(tr.getAttribute("data-i"));
+  if (!selected[i]) { setSelection([i]); lastClicked = i; }
+  rowMenu(ev);
+});
+function rowMenu(ev){
+  var n = selCount(), h = Object.keys(hiddenRows).length, d = Object.keys(deletedRows).length;
+  openMenu(ev, [
+    {label: "Hide selected row" + (n===1?"":"s") + " (" + n + ")", action: hideSelected, disabled: !n},
+    {label: "Delete selected row" + (n===1?"":"s") + " (" + n + ")", action: deleteSelected, disabled: !n},
+    "-",
+    {label: "Select all visible rows (" + CURRENT.length + ")", action: function(){ setSelection(CURRENT.map(function(r){return r.__i;})); renderViewInfo(); }},
+    {label: "Clear selection", action: function(){ setSelection([]); renderViewInfo(); }, disabled: !n},
+    "-",
+    {label: "Show hidden rows (" + h + ")", action: function(){ hiddenRows = {}; render(); }, disabled: !h},
+    {label: "Undo all deletions (" + d + ")", action: function(){ deletedRows = {}; render(); }, disabled: !d}
+  ]);
+}
+function hideSelected(){ Object.keys(selected).forEach(function(i){ hiddenRows[i] = true; }); selected = {}; render(); }
+function deleteSelected(){
+  var n = selCount(); if (!n) return;
+  if (!window.confirm("Delete " + n + " row" + (n===1?"":"s") + " from this report?\nDeleted rows are removed from the summary, the CSV export and a saved edited report.")) return;
+  Object.keys(selected).forEach(function(i){ deletedRows[i] = true; }); selected = {}; render();
+}
+document.addEventListener("keydown", function(ev){
+  if (ev.key === "Escape") { closeMenu(); if (selCount()) { setSelection([]); renderViewInfo(); } }
+  if (ev.key === "Delete" && selCount() && !/^(INPUT|SELECT|TEXTAREA)$/.test((ev.target.tagName||""))) { ev.preventDefault(); deleteSelected(); }
+});
+function renderViewInfo(){
+  var box = document.getElementById("viewinfo"); box.innerHTML = "";
+  var parts = [], n = selCount(), h = Object.keys(hiddenRows).length, d = Object.keys(deletedRows).length, hc = hiddenColList().length;
+  function link(text, fn){ var a = el("a",null,text); a.addEventListener("click", fn); return a; }
+  if (n) parts.push(document.createTextNode(n + " selected"));
+  if (h) parts.push(link(h + " hidden row" + (h===1?"":"s") + " (show)", function(){ hiddenRows = {}; render(); }));
+  if (d) parts.push(link(d + " deleted (undo)", function(){ deletedRows = {}; render(); }));
+  if (hc) parts.push(link(hc + " hidden column" + (hc===1?"":"s") + " (show)", function(){ hiddenCols = {}; applyColumnStyles(); renderViewInfo(); }));
+  parts.forEach(function(p, idx){ if (idx) box.appendChild(document.createTextNode(" \u00b7 ")); box.appendChild(p); });
+}
+
+// ---- summary ----
+function counts(rows, key){
+  var c = {};
+  rows.forEach(function(r){ var v=r[key]; (Array.isArray(v)?(v.length?v:["(none)"]):[v===""||v===null?"(none)":v]).forEach(function(x){ c[x]=(c[x]||0)+1; }); });
+  return Object.keys(c).map(function(k){return [k,c[k]];}).sort(function(a,b){return b[1]-a[1];});
+}
+function card(n,l){ var d=el("div",{"class":"card"}); d.appendChild(el("div",{"class":"n"},n)); d.appendChild(el("div",{"class":"l"},l)); return d; }
+function pie(title, key, rows, colorType){
+  var data = counts(rows, key), total = data.reduce(function(s,d){return s+d[1];},0);
+  var box = el("div",{"class":"chart"}); box.appendChild(el("h3",null,title));
+  var body = el("div",{"class":"body"}); box.appendChild(body);
+  var canvas = el("canvas",{width:140,height:140}); body.appendChild(canvas);
+  var legend = el("div",{"class":"legend"}); body.appendChild(legend);
+  var ctx = canvas.getContext ? canvas.getContext("2d") : null, start=-Math.PI/2;
+  if (!ctx) { ctx = {beginPath:function(){},moveTo:function(){},arc:function(){},closePath:function(){},fill:function(){},stroke:function(){},fillText:function(){}}; }
+  if (!total){ ctx.fillStyle="#999"; ctx.font="12px sans-serif"; ctx.fillText("no data",45,72); }
+  data.forEach(function(d,i){
+    var col = (colorType && color(colorType,d[0])) || (key==="status" && D.colors.status[d[0]] ? "#"+D.colors.status[d[0]] : PALETTE[i%PALETTE.length]);
+    var ang = d[1]/total*Math.PI*2;
+    ctx.beginPath(); ctx.moveTo(70,70); ctx.arc(70,70,66,start,start+ang); ctx.closePath(); ctx.fillStyle=col; ctx.fill();
+    ctx.strokeStyle="#fff"; ctx.lineWidth=1; ctx.stroke(); start+=ang;
+    var item = el("div",{title:"Filter: "+d[0]}); item.appendChild(el("span",{"class":"sw",style:"background:"+col}));
+    item.appendChild(el("span",null,d[0]+" \u2014 "+d[1]+" ("+Math.round(d[1]/total*100)+"%)"));
+    item.addEventListener("click", function(){ applyLegendFilter(key, d[0]); });
+    legend.appendChild(item);
+  });
+  return box;
+}
+function applyLegendFilter(key, value){
+  if (value==="(none)") return;
+  var sel = thead.querySelector('tr.f [data-key="'+key+'"]');
+  if (sel && sel.tagName==="SELECT") { sel.value=value; setFilter(key,value,true); }
+  else if (sel) { sel.value=value; setFilter(key,value,false); }
+  else setFilter(key, [value], true);   // field without a table column (e.g. category): exact filter, cleared by Reset
+}
+function renderSummary(rows){
+  var cards = document.getElementById("cards"); cards.innerHTML="";
+  var by = function(k,v){ return rows.filter(function(r){return r[k]===v;}).length; };
+  cards.appendChild(card(rows.length,"Vulnerabilities"));
+  cards.appendChild(card(by("criticality","CRITICAL") + by("criticality","HIGH"),"Critical + High"));
+  cards.appendChild(card(by("kev","YES"),"Known exploited"));
+  cards.appendChild(card(m.stats.filtered_false_positives,"Rejected candidates"));
+  var charts = document.getElementById("charts"); charts.innerHTML="";
+  charts.appendChild(pie("By component","components",rows));
+  charts.appendChild(pie("By category","categories",rows));
+  charts.appendChild(pie("By source","sources",rows));
+  charts.appendChild(pie("By project","projects",rows));
+  charts.appendChild(pie("By criticality","criticality",rows,"severity"));
+  charts.appendChild(pie("By applicability","applicability",rows,"applicability"));
+}
+
+// ---- full-height table: page scrolls vertically, table only horizontally ----
+(function(){
+  var wrap = document.querySelector(".tablewrap"), bar = document.getElementById("hscroll"), inner = bar.firstChild;
+  var tbl = document.getElementById("tbl"), syncing = false;
+  function sizeBar(){
+    inner.style.width = tbl.scrollWidth + "px";
+    bar.style.display = tbl.scrollWidth > wrap.clientWidth + 1 ? "block" : "none";
+  }
+  bar.addEventListener("scroll", function(){ if (syncing) { syncing=false; return; } syncing=true; wrap.scrollLeft = bar.scrollLeft; });
+  wrap.addEventListener("scroll", function(){ if (syncing) { syncing=false; return; } syncing=true; bar.scrollLeft = wrap.scrollLeft; });
+  // Keep both header rows visible while the page is scrolled through a long table.
+  function pinHeader(){
+    var head = tbl.tHead; if (!head) return;
+    var r = tbl.getBoundingClientRect(), hh = head.getBoundingClientRect().height;
+    var off = Math.max(0, Math.min(-r.top, r.height - hh - 30));
+    var cells = head.querySelectorAll("th"), t = off ? "translateY(" + off + "px)" : "";
+    for (var i = 0; i < cells.length; i++) cells[i].style.transform = t;
+  }
+  window.addEventListener("scroll", pinHeader, {passive:true});
+  window.addEventListener("resize", function(){ sizeBar(); pinHeader(); });
+  // Size changes (rows filtered, columns hidden or resized) re-measure the scroll bar.
+  if (window.ResizeObserver) new ResizeObserver(function(){ sizeBar(); pinHeader(); }).observe(tbl);
+  else if (window.MutationObserver) new MutationObserver(function(){ sizeBar(); pinHeader(); }).observe(tbl.tBodies[0] || tbl, {childList:true});
+  setTimeout(sizeBar, 0);
+  window.__sizeTableBar = sizeBar;
+})();
+
+// ---- toolbar ----
+document.getElementById("global").addEventListener("input", function(e){ state.global=e.target.value; render(); });
+document.getElementById("follow").addEventListener("change", render);
+document.getElementById("reset").addEventListener("click", function(){
+  state.filters={}; state.global=""; state.sort=[{key:"applicability",dir:-1},{key:"criticality",dir:-1},{key:"cvss_score",dir:-1}];
+  document.getElementById("global").value="";
+  Array.prototype.forEach.call(thead.querySelectorAll("input,select"), function(i){ if(i.type==="checkbox") i.checked=false; else i.value=""; });
+  Array.prototype.forEach.call(thead.querySelectorAll(".multi-filter summary"), function(i){i.textContent="(all)";});
+  render();
+});
+document.getElementById("export").addEventListener("click", function(){
+  var esc = function(s){ s=asText(s).replace(/"/g,'""'); return /[",\n;]/.test(s) ? '"'+s+'"' : s; };
+  var cols = COLS.filter(function(c){ return !hiddenCols[c.key]; });
+  var lines = [cols.map(function(c){return esc(c.label);}).join(",")];
+  visibleRows().forEach(function(r){ lines.push(cols.map(function(c){return esc(r[c.key]);}).join(",")); });
+  var blob = new Blob(["\ufeff"+lines.join("\n")],{type:"text/csv;charset=utf-8"});
+  var a = el("a",{href:URL.createObjectURL(blob),download:"filtered_vulnerabilities.csv"}); document.body.appendChild(a); a.click(); a.remove();
+});
+document.getElementById("saveview").addEventListener("click", function(){
+  var data = JSON.parse(JSON.stringify(D));
+  data.rows = ROWS.filter(function(r){ return !deletedRows[r.__i]; }).map(function(r){ var c = {}; for (var k in r) if (k !== "__i") c[k] = r[k]; return c; });
+  data.view = {hiddenCols: hiddenCols, widths: widths};
+  var doc = document.documentElement.cloneNode(true);
+  ["#tbl thead", "#tbl tbody", "#cards", "#charts", "#meta", "#count", "#viewinfo"].forEach(function(sel){ var n = doc.querySelector(sel); if (n) n.innerHTML = ""; });
+  Array.prototype.forEach.call(doc.querySelectorAll(".ctx"), function(n){ n.remove(); });
+  Array.prototype.forEach.call(doc.querySelectorAll("head style"), function(n, idx){ if (idx > 0) n.remove(); });
+  Array.prototype.forEach.call(doc.querySelectorAll("input"), function(n){ n.removeAttribute("value"); });
+  doc.querySelector("#report-data").textContent = JSON.stringify(data).replace(/<\//g, "<\\/");
+  var blob = new Blob(["<!DOCTYPE html>\n" + doc.outerHTML], {type: "text/html;charset=utf-8"});
+  var name = (location.pathname.split("/").pop() || "report.html").replace(/\.html?$/i, "") + "_edited.html";
+  var a = el("a",{href:URL.createObjectURL(blob),download:name}); document.body.appendChild(a); a.click(); a.remove();
+});
+applyColumnStyles();
+render();
+})();
+</script>
+</body></html>
